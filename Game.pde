@@ -15,7 +15,7 @@ class Game implements Iupdateable
     upd = true;
     win = false;
     gmover = false;
-    menu.active = false;
+    cp5.window("Menu").hide();
     levels = new Levels();
     levels.LoadLevel(Lev);
     over = false;
@@ -29,7 +29,7 @@ class Game implements Iupdateable
     win = true;
     Lifes += 3;
     Balls.clear();
-    menu.active = true;
+    cp5.window("Menu").show();
     Lev += 1;
   }
   public void gameover()
@@ -40,7 +40,7 @@ class Game implements Iupdateable
     gmover = true;
     Lifes = 3;
     Balls.clear();
-    menu.active = true;
+    cp5.window("Menu").show();
   }
   public void update()
   {

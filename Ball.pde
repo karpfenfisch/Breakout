@@ -5,10 +5,12 @@ class Ball implements Iupdateable, Idrawable
   float Speed = 5;
   float Rad = 5;
   float Dir = 0;
+  float XChange;
+  float YChange;
   color col = color(#FFFFFF);
   int dmg = 1;
 
-  boolean killball = true;//Balls get destroyed when they would leave the screen on the bottom?
+  boolean killball = true;//determines if Balls get destroyed when they leave the screen on the bottom
 
   //C O N S T R U C T O R S/////////////////////
 
@@ -36,8 +38,6 @@ class Ball implements Iupdateable, Idrawable
 
   //U P D A T E - F U N C T I O N S////////
 
-  float XChange;
-  float YChange;
   void recalcChanges()
   {
     XChange = sin(radians(Dir))*Speed/3f;
@@ -49,6 +49,16 @@ class Ball implements Iupdateable, Idrawable
     Y -= YChange;
     if ((X >= width-Rad)||(X < Rad))reflectHor();
     else if ((Y <= Rad+25)||(Y> height-Rad))reflectVert();
+    //if ball leaves the screen it gets deleted
+    if ((X >= width+Rad)||(X < -Rad))Balls.remove(Balls.indexOf(this));
+    else if ((Y <= -Rad+25)||(Y> height+Rad))Balls.remove(Balls.indexOf(this));
+    if (killball)
+    {
+      if (Y+Rad >= 495)
+      {
+        Balls.remove(Balls.indexOf(this));
+      }
+    }
     collDetect();
   }
   void reflectVert()
@@ -80,13 +90,6 @@ class Ball implements Iupdateable, Idrawable
 
   void collDetect()
   {
-    if (killball)
-    {
-      if (Y+Rad >= 495)
-      {
-        Balls.remove(Balls.indexOf(this));
-      }
-    }
     BoardCol();
     BlockCol();
     WallCol();

@@ -1,18 +1,24 @@
-public ArrayList blList;
-public ArrayList wallList;
-public ArrayList Balls;
+import controlP5.*;
+PImage curs = new PImage();//needed for invisible cursor
+
+public ArrayList blList; //List that contains all Blocks (used for detecting win(if empty))
+public ArrayList wallList; //List that contains all Walls(Blocks that cannot be destroyed(ignored for detecting win))
+public ArrayList Balls; //List that contains all Balls that are active at the time
 public Board brd;
 public Game game;
 public Menu menu;
 public Levels levels;
 public boolean upd = true;
 public int Lev = 1;
-
+public ControlP5 cp5;
+public Button bttest;
+public ControlWindow controlWindow;
 void setup()
 {
   size(500, 500);
   background(00);
-  cursor(CROSS);
+  cp5 = new ControlP5(this);
+  cursor(curs,0,0);
   game = new Game();
   menu = new Menu();
   levels = new Levels();
@@ -26,28 +32,17 @@ void setup()
 void mouseClicked()
 {
   game.addBall();
-  if (menu.active)menu.checkButtons();
+  //if (menu.active)menu.checkButtons();
 }
 void keyPressed()
 {
   if ( key == 's')
-  {
+  {//Toggle betwenn 60 and 120 fps
     if (frameRate >= 60) frameRate(60);
     else frameRate(120);
   }
-  else if (key == 'h')
-  {
-    if (game.HC)game.HC = false;
-    else game.HC = true;
-  }
-  else if (key == ' ')
-  {
-    if (!game.win&&!game.gmover)
-    {
-      if (upd)upd=false;
-      else upd = true;
-    }
-  }
+  else if (key == 'h') game.HC = !game.HC; //Toggle between the usage of HCBalls and Balls
+  else if (key == ' ') if (!game.win&&!game.gmover) upd = !upd; //Toggle between paused game and running game
 }
 void draw()
 {
@@ -78,19 +73,19 @@ void drawPause()
   if (game.gmover)text("GAME OVER", 8, 150);
   else if (game.win)text("VICTORY", 65, 150);
   else text("PAUSE", 120, 150);
-  if (menu.active)drawMenu();
+  // if (menu.active)drawMenu();
 }
-void drawMenu()
-{
-  menu.drw();
-  fill(#FF0000);
-  //Life and Money in Menu
-  textSize(20);
-  text(game.Lifes, 60, 485);
-  text("Balls:", 10, 485);
-  text(game.money, 450, 485);
-  text("$", 485, 485);
-}
+//void drawMenu()
+//{
+//  menu.drw();
+//  fill(#FF0000);
+//  //Life and Money in Menu
+//  textSize(20);
+//  text(game.Lifes, 60, 485);
+//  text("Balls:", 10, 485);
+//  text(game.money, 450, 485);
+//  text("$", 485, 485);
+//}
 void drawGame()
 {
   //grey bar on top of the screen during game
